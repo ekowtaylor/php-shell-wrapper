@@ -39,7 +39,7 @@ class Builder extends AbstractCommand
 
     public function addOption($option, $value = null)
     {
-        $this->command->addOption(new Flag($option, $value));
+        $this->command->addOption(new Option($option, $value));
         return $this;
     }
 
