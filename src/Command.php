@@ -7,11 +7,13 @@ use AdamBrett\ShellWrapper\Command\Collections\Arguments;
 use AdamBrett\ShellWrapper\Command\CommandInterface;
 use AdamBrett\ShellWrapper\Command\Flag;
 use AdamBrett\ShellWrapper\Command\Param;
+use AdamBrett\ShellWrapper\Command\Option;
 use AdamBrett\ShellWrapper\Command\SubCommand;
 
 use AdamBrett\ShellWrapper\Command\Collections\Arguments as ArgumentList;
 use AdamBrett\ShellWrapper\Command\Collections\Flags as FlagList;
 use AdamBrett\ShellWrapper\Command\Collections\Params as ParamList;
+use AdamBrett\ShellWrapper\Command\Collections\Options as OptionsList;
 use AdamBrett\ShellWrapper\Command\Collections\SubCommands as SubCommandList;
 
 class Command extends Command\AbstractCommand
@@ -19,6 +21,7 @@ class Command extends Command\AbstractCommand
     protected $arguments;
     protected $flags;
     protected $params;
+    protected $options;
     protected $subCommands;
 
     public function __construct($command)
@@ -28,18 +31,20 @@ class Command extends Command\AbstractCommand
         $this->arguments = new ArgumentList();
         $this->flags = new FlagList();
         $this->params = new ParamList();
+        $this->options = new OptionsList();
         $this->subCommands = new SubCommandList();
     }
 
     public function __toString()
     {
         return sprintf(
-            '%s%s%s%s%s',
+            '%s%s%s%s%s%s',
             $this->command,
             $this->pad($this->subCommands),
             $this->pad($this->flags),
             $this->pad($this->arguments),
-            $this->pad($this->params)
+            $this->pad($this->params),
+            $this->pad($this->options)
         );
     }
 
@@ -63,6 +68,11 @@ class Command extends Command\AbstractCommand
         $this->flags->addFlag($name);
     }
 
+    public function addOption($name)
+    {
+        $this->options->addOption($name);
+    }
+
     private function pad($string)
     {
         $string = (string) $string;
@@ -83,6 +93,7 @@ class Command extends Command\AbstractCommand
         $this->arguments = clone $this->arguments;
         $this->flags = clone $this->flags;
         $this->params = clone $this->params;
+        $this->options = clone $this->options;
         $this->subCommands = clone $this->subCommands;
     }
 }
